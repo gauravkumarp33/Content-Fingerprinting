@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://content-fingerprinting-xe7m.onrender.com';
 
 // DOM Elements
 const loader = document.getElementById('loader');
