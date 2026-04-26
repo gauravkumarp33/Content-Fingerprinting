@@ -17,3 +17,6 @@ faiss-cpu==1.7.4
 
 # Computer vision and media processing
 opencv-python-headless==4.8.1.78
+
+# Form data parsing
+python-multipart==0.0.6
