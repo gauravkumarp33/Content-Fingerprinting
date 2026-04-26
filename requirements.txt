@@ -16,4 +16,4 @@ pillow==10.0.1
 faiss-cpu==1.7.4
 
 # Computer vision and media processing
-opencv-python==4.8.1.78
+opencv-python-headless==4.8.1.78
