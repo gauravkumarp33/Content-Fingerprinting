@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus Media | Neural Fingerprinting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- Animated Background -->
+    <div class="mesh-bg">
+      <div class="blob color-1"></div>
+      <div class="blob color-2"></div>
+      <div class="blob color-3"></div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="app-container">
+      <header class="hero">
+        <h1 class="glitch-text" data-text="Nexus">Nexus</h1>
+        <p class="subtitle">Neural Media Fingerprinting</p>
+      </header>
+
+      <main class="glass-panel">
+        <div class="panels-grid">
+          <div class="panel-section" id="index-section">
+            <div class="instruction">
+              <h2>Add to Vector Database</h2>
+              <p>Upload video or image files. The system will extract frames, generate deep learning embeddings, and store them in FAISS for fast similarity search.</p>
+            </div>
+            <div class="dropzone" id="index-dropzone">
+              <div class="dropzone-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <span>Drag & Drop media here<br>or <strong class="highlight">browse files</strong></span>
+              </div>
+              <input type="file" id="index-input" class="file-input" accept="image/*,video/*">
+            </div>
+          </div>
+
+          <div class="panel-section" id="check-section">
+            <div class="instruction">
+              <h2>Search Vector Database</h2>
+              <p>Check if a media file exists or is highly similar to indexed content. Calculates distance in the embedding space.</p>
+            </div>
+            <div class="dropzone" id="check-dropzone">
+              <div class="dropzone-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>Drag & Drop media to check<br>or <strong class="highlight">browse files</strong></span>
+              </div>
+              <input type="file" id="check-input" class="file-input" accept="image/*,video/*">
+            </div>
+          </div>
+        </div>
+
+        <!-- Processing overlay -->
+        <div class="loader-overlay hidden" id="loader">
+          <div class="spinner"></div>
+          <p id="loader-text">Analyzing Neural Signatures...</p>
+        </div>
+      </main>
+
+      <!-- Results section -->
+      <section class="results-container hidden" id="results-container">
+        <h3 class="results-title">Analysis Output</h3>
+        <div class="results-card glass-panel" id="results-content">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+    </div>
+    
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
