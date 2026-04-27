@@ -1,4 +1,7 @@
-const API_BASE_URL = 'https://content-fingerprinting-xe7m.onrender.com';
+const API_BASE_URL = 'https://vansh07ai-media-fingerprinting-api.hf.space';
+
+// Initialize Google Charts
+google.charts.load('current', { 'packages': ['gauge'] });
 
 // DOM Elements
 const loader = document.getElementById('loader');
@@ -39,7 +42,7 @@ const setupDropzone = (dropzoneId, inputId, endpoint) => {
   }, false);
 
   // Handle file select via click
-  input.addEventListener('change', function() {
+  input.addEventListener('change', function () {
     if (this.files.length > 0) {
       handleFile(this.files[0], endpoint);
     }
@@ -55,7 +58,7 @@ async function handleFile(file, endpoint) {
   // Show loader
   loader.classList.remove('hidden');
   resultsContainer.classList.add('hidden');
-  
+
   if (endpoint === '/upload-media') {
     loaderText.textContent = 'Extracting Frames & Generating Neural Index...';
   } else {
@@ -91,7 +94,7 @@ async function handleFile(file, endpoint) {
 
 function displayResults(data, endpoint) {
   resultsContainer.classList.remove('hidden');
-  
+
   if (endpoint === '/upload-media') {
     resultsContent.innerHTML = `
       <div class="result-header success">
@@ -109,10 +112,13 @@ function displayResults(data, endpoint) {
     if (data.matches && data.matches.length > 0) {
       const bestMatch = data.matches[0]; // Only show the single best match
       matchesHtml = `
-        <div class="match-card ${bestMatch.label}">
-          <p><strong>Match ID:</strong><br><span style="font-size: 0.9em; word-break: break-all;">${bestMatch.id}</span></p>
-          <p><strong>Similarity Score:</strong> ${(bestMatch.score * 100).toFixed(2)}%</p>
-          <p><strong>Status:</strong> ${bestMatch.label.toUpperCase().replace('_', ' ')}</p>
+        <div class="match-card ${bestMatch.label}" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+          <div>
+            <p><strong>Match ID:</strong><br><span style="font-size: 0.9em; word-break: break-all;">${bestMatch.id}</span></p>
+            <p><strong>Similarity Score:</strong> ${(bestMatch.score * 100).toFixed(2)}%</p>
+            <p><strong>Status:</strong> ${bestMatch.label.toUpperCase().replace('_', ' ')}</p>
+          </div>
+          <div id="chart_div" style="width: 150px; height: 150px; margin-top: 1rem;"></div>
         </div>
       `;
     } else {
@@ -120,7 +126,7 @@ function displayResults(data, endpoint) {
     }
 
     const isMatch = data.match_type === 'exact' || data.match_type === 'similar';
-    
+
     resultsContent.innerHTML = `
       <div class="result-header ${isMatch ? 'success' : 'info'}">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -130,8 +136,34 @@ function displayResults(data, endpoint) {
         ${matchesHtml}
       </div>
     `;
+
+    // Draw Google Chart if there's a match
+    if (data.matches && data.matches.length > 0) {
+      setTimeout(() => {
+        if (google && google.visualization) {
+          const bestMatch = data.matches[0];
+          const scorePercent = parseFloat((bestMatch.score * 100).toFixed(2));
+
+          const chartData = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Match %', scorePercent]
+          ]);
+
+          const options = {
+            width: 150, height: 150,
+            redFrom: 0, redTo: 50,
+            yellowFrom: 50, yellowTo: 85,
+            greenFrom: 85, greenTo: 100,
+            minorTicks: 5
+          };
+
+          const chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+          chart.draw(chartData, options);
+        }
+      }, 50);
+    }
   }
-  
+
   // Smooth scroll to results
   resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }

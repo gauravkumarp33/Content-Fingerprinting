@@ -13,8 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code
 COPY ./app /app/app
 
-# Expose the port FastAPI runs on
-EXPOSE 8000
+# Expose the port Hugging Face Spaces runs on
+EXPOSE 7860
 
 # Command to run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
